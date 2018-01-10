@@ -1,6 +1,8 @@
 # easyText
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/f371e8a2ba7adfde3013/maintainability)](https://codeclimate.com/github/micschwarz/easyUV/maintainability)
+[![GitHub tag](https://img.shields.io/github/tag/micschwarz/easyUv.svg)](https://github.com/micschwarz/easyUv/tags)
+[![Blender Version](https://img.shields.io/badge/Blender-2.79-organge.svg)](https://www.blender.org/download/releases/2-79/)
 
 A Blender Plugin for quick and dirty UV-mapping
 
@@ -30,4 +32,4 @@ _Tip: For console drag the 3D Viewport Border from the top a little down_
 
 ## Versioning
 
-I'm using [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+I'm using [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/micschwarz/easyUv/tags). 
