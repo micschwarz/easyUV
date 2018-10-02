@@ -3,113 +3,125 @@
 bl_info = {
     "name": "easyUV",
     "author": "Michael S.",
-    "version": (0, 1),
-    "blender": (2, 77, 0),
+    "version": (0, 2),
+    "blender": (2, 80, 0),
     "location": "Properties > Material",
-    "description": "easy UV making",
+    "description": "easy UV mapping",
     "category": "Material"
 }
 # -------------------------------------------------------------------------------------------
+
 import bpy
-from bpy.props import *
 
-# Attribute
-atr = bpy.types.Scene
+class SharedFunctions():
+    @staticmethod
+    def setEditMode(editMode):
+        # Get which mode to set
+        setMode = "OBJECT"
+        if editMode:
+            setMode = "EDIT"
+        
+        # Set proper Mode
+        bpy.ops.object.mode_set(mode = setMode)
+        
+        if editMode:
+            bpy.ops.mesh.select_all(action = "SELECT")
+        
 
-
-# atr.name = StringProperty(name = "name", default = "lol", description = "text")
-
-# shared functions
-class sf(bpy.types.Operator):
-    # edit mode: m == True -> select all verts
-    def edit(m):
-        sop = bpy.ops
-        sop.object.editmode_toggle()
-        if m == True:
-            sop.mesh.select_all(action='TOGGLE')
-            sop.mesh.select_all(action='TOGGLE')
-        return {'FINISHED'}
-
-
-# Create UI: Tools Tab
-class window(bpy.types.Panel):
-    bl_space_type = "PROPERTIES"
-    bl_region_type = "WINDOW"
+class LayoutEasyUvPanel(bpy.types.Panel):
+    bl_label = "easyUV"
+    bl_idname = "SCENE_EASY_UV_layout"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
     bl_context = "material"
-    bl_label = "easy UV"
-    bl_category = "easyUV"
-
+    
     def draw(self, context):
         layout = self.layout
-        row = layout.row(align=True)
-        row.operator("uv.cube", text="Cube", icon="MESH_CUBE")
-        row.operator("uv.sphere", text="Sphere", icon="MATSPHERE")
-        row.operator("uv.plane", text="Plane", icon="MESH_PLANE")
-
-
-# Create UI: Buttons
-
-# UV Cube
-class OBJECT_OT_buttonCube(bpy.types.Operator):
-    bl_label = "Cube"
+        scene = context.scene
+        
+        row = layout.row(align = True)
+        
+        row.operator("uv.cube", icon="MESH_CUBE")
+        row.operator("uv.sphere", icon="MATSPHERE")
+        row.operator("uv.plane", icon="MESH_PLANE")
+        
+# Operators
+class UvCubeOperator(bpy.types.Operator):
     bl_idname = "uv.cube"
-    bl_description = "Create Cube UV"
+    bl_label = "Cube"
+    
+    returnToModeObject = True
+
+    @classmethod
+    def poll(self, context):
+        self.returnToModeObject = context.mode == 'OBJECT'
+        return (True)
 
     def execute(self, context):
-        # Shorts
-        p = print
-        scene = bpy.context.scene
-        sop = bpy.ops
-
-        # Uv Map
-        sf.edit(True)
-        sop.uv.cube_project()
-        sf.edit(False)
+        SharedFunctions.setEditMode(True)
+        bpy.ops.uv.cube_project()
+        
+        if self.returnToModeObject:
+            SharedFunctions.setEditMode(False)
+            
         return {'FINISHED'}
 
-
-# UV Sphere
-class OBJECT_OT_buttonSphere(bpy.types.Operator):
-    bl_label = "Cube"
+class UvSphereOperator(bpy.types.Operator):
     bl_idname = "uv.sphere"
-    bl_description = "Create Sphere UV"
+    bl_label = "Sphere"
+
+    @classmethod
+    def poll(self, context):
+        self.returnToModeObject = context.mode == 'OBJECT'
+        return (True)
 
     def execute(self, context):
-        # Shorts
-        p = print
-        scene = bpy.context.scene
-        sop = bpy.ops
-
-        # Uv Map
-        sf.edit(True)
-        sop.uv.sphere_project()
-        sf.edit(False)
+        SharedFunctions.setEditMode(True)
+        bpy.ops.uv.sphere_project()
+        
+        if self.returnToModeObject:
+            SharedFunctions.setEditMode(False)
+        
         return {'FINISHED'}
-
-
-# UV Plane
-class OBJECT_OT_buttonPlane(bpy.types.Operator):
-    bl_label = "Cube"
+    
+class UvPlaneOperator(bpy.types.Operator):
     bl_idname = "uv.plane"
-    bl_description = "Create Plane UV"
+    bl_label = "Plane"
+
+    @classmethod
+    def poll(self, context):
+        self.returnToModeObject = context.mode == 'OBJECT'
+        return (True)
 
     def execute(self, context):
-        # Shorts
-        p = print
-        scene = bpy.context.scene
-        sop = bpy.ops
-
-        # Uv Map
-        sf.edit(True)
-        sop.uv.unwrap(method='ANGLE_BASED', margin=0.001)
-        sf.edit(False)
+        SharedFunctions.setEditMode(True)
+        bpy.ops.uv.unwrap()
+        
+        if self.returnToModeObject:
+            SharedFunctions.setEditMode(False)
+        
         return {'FINISHED'}
+    
+# Addon Stuff
+def register():
+    # Register Operators
+    bpy.utils.register_class(UvCubeOperator)
+    bpy.utils.register_class(UvSphereOperator)
+    bpy.utils.register_class(UvPlaneOperator)
+    
+    # Register Panel
+    bpy.utils.register_class(LayoutEasyUvPanel)
 
 
-def register(): bpy.utils.register_module(__name__)
+def unregister():
+    # Unregister Operators
+    bpy.utils.unregister_class(UvCubeOperator)
+    bpy.utils.unregister_class(UvSphereOperator)
+    bpy.utils.unregister_class(UvPlaneOperator)
+    
+    # Unregister Panel
+    bpy.utils.unregister_class(LayoutEasyUvPanel)
 
 
-def unregister(): bpy.utils.unregister_module(__name__)
-
-
-if __name__ == "__main__": register()
+if __name__ == "__main__":
+    register()
