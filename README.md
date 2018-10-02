@@ -2,15 +2,15 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/f371e8a2ba7adfde3013/maintainability)](https://codeclimate.com/github/micschwarz/easyUV/maintainability)
 [![GitHub tag](https://img.shields.io/github/tag/micschwarz/easyUv.svg)](https://github.com/micschwarz/easyUv/tags)
-[![Blender Version](https://img.shields.io/badge/Blender-2.79-organge.svg)](https://www.blender.org/download/releases/2-79/)
+[![Blender Version](https://img.shields.io/badge/blender-2.8-orange.svg)](https://www.blender.org/download/releases/2-8/)
 
 A Blender Plugin for quick and dirty UV-mapping
 
 ## Getting Started
 ### Prerequisites
 
-* [Blender](https://www.blender.org/) (v2.77+)
-* [Python](https://www.python.org/) (v3.5+, only for development)
+* [Blender](https://www.blender.org/) (v2.8+)
+* [Python](https://www.python.org/) (v3.7+, only for development)
 
 ### Installing in Blender
 
