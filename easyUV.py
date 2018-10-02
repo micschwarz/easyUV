@@ -3,7 +3,7 @@
 bl_info = {
     "name": "easyUV",
     "author": "Michael S.",
-    "version": (0, 2),
+    "version": (0, 2, 1),
     "blender": (2, 80, 0),
     "location": "Properties > Material",
     "description": "easy UV mapping",
